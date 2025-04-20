@@ -1,0 +1,18 @@
+# Environment variables
+.env
+
+# Image files
+image/
+
+# Documentation files
+doc/
+
+# CSV files
+*.csv
+
+# Node modules
+node_modules/
+
+# Build files
+dist/
+build/

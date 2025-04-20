@@ -1,0 +1,26 @@
+{
+  "name": "whichGrocery",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "start": "node --loader ts-node/esm src/backend/server.ts",
+    "build": "tsc",
+    "dev": "node --loader ts-node/esm src/backend/server.ts",
+    "frontend": "vite serve src/frontend --port 3000",
+    "frontend:build": "vite build src/frontend"
+  },
+  "dependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.14.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.2"
+  }
+}

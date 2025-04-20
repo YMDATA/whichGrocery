@@ -1,0 +1,15 @@
+# Cline Rules Configuration
+
+# Server Ports
+SERVER_PORT=3000
+MCP_PORT=3001
+
+# Scraper Settings
+SCRAPER_TIMEOUT=5000
+MAX_PRODUCTS=10
+
+# Development Mode
+DEV_MODE=true
+
+# Protected Files
+PROTECTED_FILES=.env

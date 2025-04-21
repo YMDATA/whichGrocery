@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: mcp-server
+    runtime: node
+    buildCommand: npm install && npm run build
+    startCommand: node build/index.js
+    envVars:
+      - key: PORT
+        value: 3001
+      - key: NODE_ENV
+        value: production
+      - key: PUPPETEER_TIMEOUT
+        value: "60000"
+      - key: SCRAPER_MAX_RETRIES
+        value: "3"

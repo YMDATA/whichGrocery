@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node -r ts-node/register src/backend/server.ts",
     "build": "vite build src/frontend && tsc",
-    "build:mcp": "cd scripts/mcp-server && npm install && npm run build",
+    "build:mcp": "pwd && ls -la && cd scripts/mcp-server && pwd && npm install && npm run build",
     "dev": "node --loader ts-node/esm src/backend/server.ts",
     "frontend": "vite serve src/frontend --port 3000",
     "frontend:build": "vite build src/frontend",

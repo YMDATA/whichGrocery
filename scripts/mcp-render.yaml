@@ -2,7 +2,7 @@ services:
   - type: web
     name: mcp-server
     runtime: node
-    buildCommand: npm install && npm run build
+    buildCommand: npm install && tsc
     startCommand: node build/index.js
     envVars:
       - key: PORT

@@ -3,18 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>お得レシピ</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <title>お得献立</title>
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
     <div class="container">
-        <h1>お得レシピ</h1>
+        <h1>お得献立</h1>
         <form id="scrapeForm">
             <label for="url">トクバイページURL:</label>
-            <input type="url" id="url" name="url" required>
-            <button type="submit">お得レシピ検索</button>
+            <div class="input-group">
+                <input type="url" id="url" name="url" required>
+                <button type="button" id="sampleUrlBtn" class="sample-btn">(サンプルURLを挿入)</button>
+            </div>
+            <button type="submit">お得献立検索</button>
         </form>
-        <div id="result"></div>
+        <div id="result">
+            <div id="resultTop"></div>
+            <div id="resultMiddle"></div>
+            <div id="resultBottom"></div>
+        </div>
+        <button id="toggleResult" class="toggle-btn">詳細結果を表示</button>
     </div>
     <script src="/js/app.js"></script>
 </body>

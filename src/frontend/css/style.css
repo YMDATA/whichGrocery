@@ -7,12 +7,12 @@ body {
 }
 
 .container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 30px;
     background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 h1 {
@@ -27,11 +27,32 @@ form {
     margin-bottom: 20px;
 }
 
+.input-group {
+    display: flex;
+    gap: 10px;
+}
+
 input[type="url"] {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 16px;
+    flex-grow: 1;
+}
+
+.sample-btn {
+    padding: 10px 15px;
+    background-color: #ff9800;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.sample-btn:hover {
+    background-color: #e68a00;
 }
 
 button {
@@ -50,10 +71,38 @@ button:hover {
 
 #result {
     margin-top: 20px;
-    padding: 15px;
     border: 1px solid #ddd;
     border-radius: 4px;
     background-color: #f9f9f9;
+}
+
+#resultTop {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+#resultBottom {
+    padding: 15px;
+    display: none; /* 初期状態で非表示 */
+}
+
+.toggle-btn {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.toggle-btn:hover {
+    background-color: #0b7dda;
+}
+
+#resultMiddle {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
 }
 
 .product-table {

@@ -49,12 +49,18 @@ function markdownToHtml(markdown) {
     `;
 }
 
+// サンプルURLを挿入
+document.getElementById('sampleUrlBtn').addEventListener('click', () => {
+    document.getElementById('url').value = 'https://tokubai.co.jp/%E3%83%A4%E3%83%9E%E3%83%8A%E3%82%AB/493';
+});
+
 document.getElementById('scrapeForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const url = document.getElementById('url').value;
-    const resultDiv = document.getElementById('result');
+    const resultTop = document.getElementById('resultTop');
+    const resultBottom = document.getElementById('resultBottom');
     
-    resultDiv.innerHTML = '処理中...';
+    resultTop.innerHTML = '処理中...';
     
     try {
         // MCPスクレイピングAPIを呼び出し
@@ -81,11 +87,61 @@ document.getElementById('scrapeForm').addEventListener('submit', async (e) => {
         const markdown = formatMarkdown(data.products);
         
         // MarkdownをHTMLに変換して表示
-        resultDiv.innerHTML = `
+        // 上側に基本情報を表示
+        resultTop.innerHTML = `
             <h2>スクレイピング結果</h2>
-            ${markdownToHtml(markdown)}
+            <p>${data.products.length}件の商品が見つかりました</p>
         `;
+        
+        // 下側に詳細結果を表示
+        resultBottom.innerHTML = markdownToHtml(markdown);
+        
+        // ボタンで下側のみ表示/非表示を切り替え
+        const toggleBtn = document.getElementById('toggleResult');
+        toggleBtn.onclick = () => {
+            resultBottom.style.display = resultBottom.style.display === 'none' ? 'block' : 'none';
+            toggleBtn.textContent = resultBottom.style.display === 'none' ? '詳細結果を表示' : '詳細結果を非表示';
+        };
+
+        // スクレイピング後に自動的にレシピ検索を実行
+        const resultMiddle = document.getElementById('resultMiddle');
+        resultMiddle.innerHTML = 'レシピ検索中...';
+        
+        try {
+            const ingredients = data.products.map(p => p.name).join(', ');
+            const prompt = `以下の食材を使って作れる晩御飯の献立を3つ提案してください。他の食材を少し使っても構いません。\n食材: ${ingredients}`;
+            
+            console.log('Sending request to /api/deepseek with prompt:', prompt);
+            const response = await fetch('http://localhost:3000/api/deepseek', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ prompt })
+            });
+            console.log('Received response:', response);
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`API request failed: ${response.status} ${errorText}`);
+            }
+
+            const recipeData = await response.json().catch(e => {
+                throw new Error(`Failed to parse API response: ${e.message}`);
+            });
+            
+            if (!recipeData?.success) {
+                throw new Error(recipeData?.error || 'レシピ検索に失敗しました');
+            }
+            
+            resultMiddle.innerHTML = `
+                <h3>おすすめレシピ</h3>
+                <div class="recipes">${recipeData.result.replace(/\n/g, '<br>')}</div>
+            `;
+        } catch (error) {
+            resultMiddle.innerHTML = `レシピ検索エラー: ${error.message}`;
+        }
     } catch (error) {
-        resultDiv.innerHTML = `エラー: ${error.message}`;
+        resultTop.innerHTML = `エラー: ${error.message}`;
     }
 });

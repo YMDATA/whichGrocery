@@ -1,24 +1,22 @@
 import express from 'express';
 import cors from 'cors';
+import dotenv from 'dotenv';
+import axios from 'axios';
+
+dotenv.config();
 import path from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 import 'dotenv/config';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = path.resolve();
 
-const app = express();
+export const app = express();
 const port = 3000;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-// Serve static files
-app.use(express.static(path.join(__dirname, '../frontend')));
-
-// API Routes
+// API Routes must come before static files to avoid conflicts
 app.post('/api/scrape', async (req, res) => {
     try {
         const { url } = req.body;
@@ -40,41 +38,26 @@ app.post('/api/scrape', async (req, res) => {
     }
 });
 
-app.post('/api/suggest-recipe', async (req, res) => {
+// テスト用スタブAPIエンドポイント
+app.post('/api/deepseek', (req, res) => {
     try {
-        const { products } = req.body;
-        const prompt = `以下の食材を使って、簡単で美味しい晩御飯のレシピを提案してください:\n${products.join('\n')}`;
-        
-        const response = await fetch(process.env.DEEPSEEK_API_URL!, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`
-            },
-            body: JSON.stringify({
-                model: "deepseek-chat",
-                messages: [{
-                    role: "user",
-                    content: prompt
-                }],
-                temperature: 0.7
-            })
-        });
-
-        const data = await response.json();
-        
-        if (!response.ok) {
-            throw new Error(data.error?.message || 'API request failed');
-        }
-
-        res.json({ 
-            success: true, 
-            recipe: data.choices[0]?.message?.content || 'レシピを生成できませんでした'
-        });
+        console.log('Received request to /api/deepseek (stub)');
+        const mockResponse = {
+            success: true,
+            result: "1. 鯛のアクアパッツァ\n2. 鯛の塩焼き\n3. 鯛の潮汁"
+        };
+        res.json(mockResponse);
     } catch (error) {
-        res.status(500).json({ error: 'Recipe suggestion failed' });
+        console.error('Stub API error:', error);
+        res.status(200).json({
+            success: true,
+            result: "テスト用レシピデータ"
+        });
     }
 });
+
+// Serve static files after API routes
+app.use(express.static(path.join(__dirname, '../frontend')));
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);

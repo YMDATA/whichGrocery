@@ -10,7 +10,11 @@
       "use": "@vercel/static-build",
       "config": {
         "distDir": "dist",
-        "outputDirectory": "dist"
+        "outputDirectory": "dist",
+        "includeFiles": [
+          "dist/**",
+          "src/frontend/**"
+        ]
       }
     }
   ],
